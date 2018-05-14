@@ -11,8 +11,7 @@ public class BottomPanel extends JPanel {
 	public BottomPanel(GameWindow window) {
 		this.window = window;
 		this.setPreferredSize(new Dimension(WIDTH, 125));
-		
-		setBackground(Color.BLACK);
+		this.setBackground(Color.BLACK);
 		this.setLayout(null);
 		
 		JLabel power = new JLabel(new ImageIcon("power.png"));

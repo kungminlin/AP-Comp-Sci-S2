@@ -75,16 +75,18 @@ public class PlayerPhysics implements PhysicsEngine, ActionListener, KeyListener
 		
 		// Physics Y
 		if (!onGround) {
-			if (Math.round(player.getAccelY()) <= 0) {
-				player.setAccelY(player.getAccelY()-0.1);
-				falling = false;
-			}
-			if (falling && player.getAccelY() <= 100) {
-				player.setAccelY(player.getAccelY()-0.1);
-			} else {
-				player.setAccelY(player.getAccelY()+0.1);
-			}
+			if (Math.round(player.getAccelY()) <= 0) falling = true;
 		}
+		
+		if (falling) {
+			player.setAccelY(player.getAccelY()+0.1);
+			player.setVelY(-Math.abs(player.getVelY()));
+		} else {
+			player.setVelY(Math.abs(player.getVelY()));
+			player.setAccelY(player.getAccelY()-0.1);
+		}
+		
+		player.setAccelY(Math.abs(player.getAccelY()));
 		
 		
 	}
@@ -103,16 +105,13 @@ public class PlayerPhysics implements PhysicsEngine, ActionListener, KeyListener
 		if (player.getXPos() <= 0) player.setVelX(Math.abs(player.getVelX()));
 		if (player.getXPos() >= gamePanel.getWidth()-player.getSize()) player.setVelX(-Math.abs(player.getVelX()));
 		
-		if (player.getYPos()>600) {
+		if (player.getYPos()>=600) {
+			player.setY(600);
 			onGround = true;
 			falling = false;
-			//player.setAccelY(-Math.abs(player.getAccelX()));
-			
-			player.setVelY(-Math.abs(player.getVelX()));
-			player.setY(600);
 		}
 		
-		System.out.println(falling);
+		System.out.println(player.getY());
 		
 		updatePhysics();
 		player.move();
