@@ -109,9 +109,11 @@ public class PlayerPhysics implements PhysicsEngine, ActionListener, KeyListener
 			player.setY(600);
 			onGround = true;
 			falling = false;
-		}
+		} else onGround = false;
 		
-		System.out.println(player.getY());
+		if (onGround) player.setAccelY(0);
+		
+		System.out.println(player.getAccelY());
 		
 		updatePhysics();
 		player.move();
