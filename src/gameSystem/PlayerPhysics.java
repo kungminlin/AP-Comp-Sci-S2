@@ -42,13 +42,7 @@ public class PlayerPhysics implements PhysicsEngine, ActionListener, KeyListener
 				}
 			}
 		} else if (input == ' ') {
-			if (onGround) {
-				player.setVelY(3);
-				player.setAccelY(3);
-				onGround = false;
-				falling = false;
-				((GamePanel)gamePanel).playMusic("player_jump.wav");
-			}
+			player.getWeapon().attack();
 		}
 	}
 
@@ -105,15 +99,23 @@ public class PlayerPhysics implements PhysicsEngine, ActionListener, KeyListener
 		if (player.getXPos() <= 0) player.setVelX(Math.abs(player.getVelX()));
 		if (player.getXPos() >= gamePanel.getWidth()-player.getSize()) player.setVelX(-Math.abs(player.getVelX()));
 		
+		if (player.getWeapon() instanceof Shootable) for (int i=0; i<((Shootable)player.getWeapon()).getBullets().size(); i++) {
+			Bullet bullet = ((Shootable)player.getWeapon()).getBullets().get(i);
+			if (bullet.getX() <= 0 || bullet.getX() >= gamePanel.getWidth()) {
+				((Shootable)player.getWeapon()).getBullets().remove(i);
+				i--;
+			}
+		}
+		
 		if (player.getYPos()>=600) {
 			player.setY(600);
 			onGround = true;
 			falling = false;
 		} else onGround = false;
 		
-		if (onGround) player.setAccelY(0);
-		
-		System.out.println(player.getAccelY());
+		if (onGround) {
+			player.setAccelY(0);
+		}
 		
 		updatePhysics();
 		player.move();

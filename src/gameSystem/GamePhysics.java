@@ -33,11 +33,17 @@ public class GamePhysics implements PhysicsEngine, ActionListener, FocusListener
 	public void actionPerformed(ActionEvent e) {
 		for (int i=0; i<enemies.size(); i++) {
 			Enemy enemy = enemies.get(i);
-			if (enemy.getCollider().intersects(player.getCollider())) {
-				((GamePanel)gamePanel).playMusic("hitsound.wav");
-				enemies.remove(enemy);
-				i--;
+			if (player.getWeapon() instanceof Shootable) for (int j=0; j < ((Shootable)player.getWeapon()).getBullets().size(); j++) {
+				Bullet bullet = ((Shootable)player.getWeapon()).getBullets().get(i);
+				if (enemy.getCollider().intersects(bullet.getCollider().getBounds())) {
+					((GamePanel)gamePanel).playMusic("hitsound.wav");
+					enemies.remove(enemy);
+					((Shootable)player.getWeapon()).getBullets().remove(j);
+					j--;
+					i--;
+				}
 			}
+			
 			
 //			if (player.getCollider().intersects(enemies.get(i).getCollider())) {
 //				//if ()

@@ -1,4 +1,5 @@
 package gameEntities;
+import gameSystem.*;
 import java.awt.*;
 
 public class Player {
@@ -12,23 +13,34 @@ public class Player {
 	private double accelY = 0;
 	
 	private Rectangle collider;
+	private Weapon weapon;
 	
 	public Player() {
 		x = 500;
 		y = 600;
 		collider = new Rectangle(getX(), getY(), SIZE, SIZE);
+		weapon = new Sword(getX(), getY(), 10);
+	}
+	
+	public Weapon getWeapon() {
+		return weapon;
 	}
 	
 	public void draw(Graphics g) {
-		g.setColor(Color.GREEN);
+		weapon.draw(g);
+		g.setColor(Color.PINK);
 		g.drawRect(getX(), getY(), SIZE, SIZE);
 		g.fillRect(getX(), getY(), SIZE, SIZE);
+		
 	}
 	
 	public void move() {
 		x+=accelX*velX/3;
 		y-=accelY*velY/3;
 		collider = new Rectangle(getX(), getY(), SIZE, SIZE);
+		weapon.setPosition(getX(), getY());
+		if (accelX*velX/3 > 0) weapon.setDirection(true);
+		else if (accelX*velX/3 < 0) weapon.setDirection(false);
 	}
 	
 	// Getters and Setters for Position, Velocity and Acceleration
